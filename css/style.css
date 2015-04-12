@@ -73,11 +73,11 @@
 	@keyframes wrapper { 0% { opacity: 0; } 100% { opacity: 1; } }
 
 	#wrapper {
-		-moz-animation: wrapper 1s forwards;
-		-webkit-animation: wrapper 1s forwards;
-		-o-animation: wrapper 1s forwards;
-		-ms-animation: wrapper 1s forwards;
-		animation: wrapper 1s forwards;
+		-moz-animation: wrapper 2s forwards;
+		-webkit-animation: wrapper 2s forwards;
+		-o-animation: wrapper 2s forwards;
+		-ms-animation: wrapper 2s forwards;
+		animation: wrapper 2s forwards;
 		height: 100%;
 		left: 0;
 		opacity: 0;
