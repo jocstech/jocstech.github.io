@@ -5,10 +5,10 @@ var itmes=[]; // items on the wheel
 var slices;
 var sliceAngle;
 var angle;
-var speed;
-var slowDownRand;
+var spinningSpeed;
+var deceleration;
 var wheelCanvas; // wheel canvas
-var size; // wheel size
+var width; // wheel size
 var center; // center point
 var stop;
 var lock;
@@ -18,11 +18,12 @@ var result;
 
 
 // constructor
-function createWheel(list) {
+function createWheel(canvas,list) {
     itmes = list;
+    wheelCanvas = canvas.getContext('2d');
     initialize();
+    eventsListenner(canvas);
     animation();
-    eventsListenner();
 }
 
 
@@ -34,44 +35,50 @@ function initialize() {
     slices = colour.length;
     sliceAngle = 360/slices;
     angle = rand(0, 360);
-    speed = 0;
-    slowDownRand = 0;
-    wheelCanvas = canvas.getContext('2d');
-    size = canvas.width; // size
-    center = size/2;      // center
+    spinningSpeed = 0;
+    deceleration = 0;
+    width = canvas.width; // size
+    center = width/2;      // center
     stop = false;
     lock = false;
     
 }
 
-function eventsListenner() {
-    $("#canvas").click(function(){
-  stop = true;
-    });
+function eventsListenner(canvas) {
+    $(canvas).click(function(){
+        stop = true;
+        // jQueryUI lib pulsate effct:
+        $(this).effect("pulsate", { times:6 }, 2000);
+});
+}
+
+function setStyle(canvas) {
+    
 }
 
 function animation() {
-  angle += speed;
+  angle += spinningSpeed;
   angle %= 360;
 
-  // Increment speed
-  if(!stop && speed<3){
-    speed = speed+1 * 0.1;
+  // Increment spinningSpeed
+  if(!stop && spinningSpeed<3){
+    spinningSpeed = spinningSpeed+1 * 0.1;
   }
   // Decrement Speed
   if(stop){
     if(!lock){
       lock = true;
-      slowDownRand = rand(0.994, 0.999);
+      deceleration = rand(0.994, 0.999);
     } 
-    speed = speed>0.2 ? speed*=slowDownRand : 0;
+    spinningSpeed = spinningSpeed>0.2 ? spinningSpeed*=deceleration : 0;
   }
   // Stopped!
-  if(lock && !speed){
-    var decisionIndex = Math.floor(((360 - angle - 180) % 360) / sliceAngle); // angle 2 Array Index
+  if(lock && !spinningSpeed){
+    var decisionIndex = Math.floor(((360 - angle - 90) % 360) / sliceAngle);
     decisionIndex = (slices+decisionIndex)%slices;
+    // store the result:
     result = itmes[decisionIndex];
-    return $('#result').html("You got:</br>"+result); // Get Array Item from end Degree
+    return $('#result').html("You got:</br>"+result);
   }
 
   drawWheel();
@@ -94,7 +101,7 @@ function drawText(angle, text) {
     wheelCanvas.save();
     wheelCanvas.translate(center, center);
     wheelCanvas.rotate(degreeToRadius(angle));
-    wheelCanvas.textAlign = "center";
+    wheelCanvas.textAlign = "left";
     wheelCanvas.fillStyle = "#fff";
     wheelCanvas.font = 'bold '+getFontSize(text)+'px sans-serif';
     wheelCanvas.shadowColor = "#111";
@@ -106,7 +113,7 @@ function drawText(angle, text) {
 }
 
 function drawWheel() {
-  wheelCanvas.clearRect(0, 0, size, size);
+  wheelCanvas.clearRect(0, 0, width, width);
   for(var i=0; i<slices; i++){
     drawSlice(angle, colour[i]);
     drawText(angle+sliceAngle/2, itmes[i]);
@@ -144,8 +151,6 @@ function getFontSize(text) {
 function getCanvas() {
     return this.wheelCanvas;
 }
-
-
 
 
 

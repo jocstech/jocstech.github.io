@@ -2,13 +2,13 @@ body {
   text-align: center;
 }
 
-#wheel{
+.wheel{
   display:inline-block;
   position: relative;
   overflow: hidden;
 }
 
-#wheel:after{
+.wheel:after{
   content:"";
   background: red;
   border: 2px solid white;
@@ -22,7 +22,14 @@ body {
   visibility: hidden;
 }
 
-#result {
+#result{
     font-size: 22px;
-    color: blue;
+    font-family: sans-serif;
+}
+
+#indictor {
+    width: 30px;
+    position:absolute;
+    left: 50%;
+    
 }
