@@ -61,6 +61,7 @@ var got2 = {x:window.innerWidth/4-40,y:-20};
 
 // Main Function:
 (function(){
+    //buildGame();
     homePage();
 })();
 
@@ -115,11 +116,10 @@ function init(){
     bird = new Image();
     bird.src='assets/images/bird002.svg';
     size = 20;
-    gravity = 1;
+    gravity = 0.09;
     
     // initial speed
-    V0 = 0.5;
-    
+    V0 = 0;
     bx = (winW/8)-(size/2);
     by = 0;
     angle = 0;
@@ -127,11 +127,8 @@ function init(){
     
     // obs
     gap = 100;
-    
-    
     mvSpeed = 0.5;
-    fps = 1.3;
-    time = 0;
+    fps = 1;
     obs1.x = winW/2;
     obs1.height = getRandomInt(2,winH/3);
     
@@ -178,20 +175,30 @@ function draw(){
     screenCheck();
 }
 
-
+function controlUpdate(){
+    V0 += -9;
+    angle= 0.6;
+}
 
 
 function EventListener(){
     $(window).on('resize',function(){
-        update();
+        //update();
+    });
+    
+    $(window).on('tap',function(){
+        controlUpdate();
+    });
+    
+    $(window).click(function(e){
+        controlUpdate();
     });
     
     $(window).keypress(function(e){
         var key = e.keyCode ? e.keyCode : e.which;
         // spacebar
         if(key == 32) {
-            V0 = -1;
-            angle= 0.6;
+            controlUpdate();
         }
     });
     
@@ -207,7 +214,7 @@ function EventListener(){
     $(window).keyup(function(e){
          var key = e.keyCode ? e.keyCode : e.which;
          if(key == 32) {
-             V0 = 0.5;
+             //V0 = 0.5;
         }
         
         if (key == 68 || key == 39 || key == 100){
@@ -272,10 +279,13 @@ function frame() {
 }
 
 function moving(){
-    if(by<winH/2-size+10)
-       by+=V0*gravity*fps;
-    else
-        dead = true;   
+    if(by<winH/2-size+10){
+       V0+=gravity;
+       V0*=0.9;
+       by+=V0*fps;
+    } else {
+        dead = true;
+    }
 }
 
 function obsAnimation() {
