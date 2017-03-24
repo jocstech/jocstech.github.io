@@ -4,7 +4,6 @@ debugMode = false;
 // system:
 var doc,
     win,
-    canvas,
     winW,
     winH;
 
@@ -119,8 +118,8 @@ function buildGame(){
     if(firstTime) getUsername();
     init();
     DivInit();
-    setup();
     webglInit();
+    setup();
     draw();
     EventListener();
     startAnimation();
@@ -129,6 +128,7 @@ function buildGame(){
 function clearUp(){
     firstTime = false;
     destroyEventListener();
+    bgm.play();
 }
 
 // Functions:
@@ -136,9 +136,6 @@ function init(){
     
     doc = document;
     win = window;
-    winW = window.innerWidth*2;
-    winH = window.innerHeight*2;
-    
     
     canvasBG = '#EAF2F8'; 
     bgm = $('#bgm')[0];
@@ -171,22 +168,23 @@ function init(){
     mvSpeed = 1;
     oldSpeed = 1;
     fps = 0;
+    clouds=[]
     
-    createClouds();
-    buildObstacles();
+
     
     if((username.length<1)&&((username=='')||(username==null)||(username==undefined))) username = "Flappy Bird";
     
     score = 0;
     level = 1;
     
-    got = {x:winW/2,y:-20};
+
     
 }
 
 function createClouds(){
     // clouds
     var num = Math.round(winW/300);
+    debug(num);
     var oldPos = 0;
     var cloud;
     for(var n  = 0 ; n < num ; n++){
@@ -206,7 +204,9 @@ function createClouds(){
 
 
 function buildObstacles(){    
+    debug(winW);
     obss = generateObstacle(Math.round(winW/400));
+    debug(obss.length);
 }
 
 
@@ -237,26 +237,24 @@ function update(){
 }
 
 function DivInit(){
-    //push('body','<h1>New Canvas</h1>');
     $('#canvas').remove();
     push('body','<canvas id="canvas"></canvas>');
     push('body','<input id="btnPlayAgain" type="button" style="z-index:2; position:absolute; top:-50px; left:'+(winW/2)+'px" value="Play Again"/>');
 }
 
-function setup(){
-    $('#canvas').attr('width',winW).attr('height',winH);
-}
-
 function webglInit(){
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    //Retina sup
     retinaSupport(canvas);
+}
+function setup(){
+    $('#canvas').attr('width',winW).attr('height',winH);
+    createClouds();
+    buildObstacles();
+    got = {x:winW/2,y:-20};
 }
 
 function drawScene(){
-    winW = window.innerWidth*2;
-    winH = window.innerHeight*2;
     ctx.save();
     ctx.fillStyle = canvasBG;
     ctx.fillRect(0,0,winW,winH);
@@ -285,6 +283,7 @@ function destroyEventListener(){
 function EventListener(){
     $(window).on('resize',function(){
         buildObstacles();
+        createClouds();
         got.x = winW/2;
         update();
     });
@@ -349,7 +348,7 @@ function screenCheck(){
 }
 
 function screenCheckAnimation(){
-    if(got.y<(window.innerHeight))
+    if(got.y<(winH/2))
         got.y+=1;
     else{
         clearInterval(id);
@@ -516,7 +515,7 @@ function drawObs(){
         fillCircle(obss[n].x+obsW/2,obss[n].height-13,obss[n].color1);
         fillCircle(obss[n].x+obsW/2,obss[n].height+gap+13,obss[n].color2); 
     
-        if(obss[n].x+obsW/2>bx+100)
+        if((obss[n].x+obsW/2>bx+100)&&!dead)
             drawFuzzyLines(obss[n].x+obsW/2,obss[n].height-13,obss[n].x+obsW/2,obss[n].height+gap+13);
     }
 }
@@ -656,7 +655,6 @@ function debug(msg){
 
 
 function retinaSupport(canvas) {
-    if (window.devicePixelRatio) {
         var realToCSSPixels = window.devicePixelRatio;
         var displayWidth = Math.floor(canvas.clientWidth * realToCSSPixels);
         var displayHeight = Math.floor(canvas.clientHeight * realToCSSPixels);
@@ -664,7 +662,8 @@ function retinaSupport(canvas) {
         if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
             // Make the canvas the same size
             canvas.width = displayWidth;
+            winW = displayWidth;
             canvas.height = displayHeight;
-        }
+            winH = displayHeight;
     }
 }
