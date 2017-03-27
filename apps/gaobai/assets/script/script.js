@@ -75,7 +75,7 @@ function init(){
     dead = false;
     score = 0;
     acc = 10;
-    starSize = 10000;
+    starSize = 5000;
     
     mouseIn = false;
     // Player
@@ -85,7 +85,7 @@ function init(){
 
 function buildComponents(){
     for(var n = 0 ; n < starSize ; n++){
-        var star = {x:mX, y:mY, angle:getRandomInt(0,360)*(Math.PI/180) ,size:5 , color:color[getRandomInt(0,color.length-1)]};
+        var star = {x:mX, y:mY, angle:getRandomInt(0,360)*(Math.PI/180) ,size:6 , color:color[getRandomInt(0,color.length-1)]};
         stars.push(star);
     }
 }
