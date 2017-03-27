@@ -25,7 +25,7 @@ var mouseIn;
 
 // game styles:
 
-var color = ['white','yellow','Blue','BlueViolet','Coral','DarkGreen','Gold','LightSeaGreen','Lime','YellowGreen','Turquoise','SteelBlue','Salmon','PowderBlue'];
+var color = ['red','white','yellow','Blue','BlueViolet','Coral','DarkGreen','Gold','LightSeaGreen','Lime','YellowGreen','Turquoise','SteelBlue','Salmon','PowderBlue'];
 
 // characters:
 
@@ -85,7 +85,7 @@ function init(){
 
 function buildComponents(){
     for(var n = 0 ; n < starSize ; n++){
-        var star = {x:mX, y:mY, angle:getRandomInt(0,360)*(Math.PI/180) ,size:6 , color:color[getRandomInt(0,color.length-1)]};
+        var star = {x:mX, y:mY, angle:getRandomInt(0,360)*(Math.PI/180) ,size:0 , color:color[getRandomInt(0,color.length-1)]};
         stars.push(star);
     }
 }
@@ -112,14 +112,14 @@ function webglInit(){
     mX = winW/2;
     mY = winH/2;
     
-    confe = {angle:getRandomInt(0,360)*(Math.PI/180),x:winW/2-250,y:winH/2-100,w:500,h:200,xdic:1,ydic:1,xspeed:1,yspeed:1,xacc:0.01,yacc:0.01};
+    confe = {angle:getRandomInt(0,360)*(Math.PI/180),x:winW/2-250,y:winH/2-100,w:500,h:200,xdic:1,ydic:1,xspeed:0.5,yspeed:0.5,xacc:0.01,yacc:0.01};
 }
 
 function draw(){
     drawScene();
-    drawConfe();
     drawCharacter();
     drawObstacle();
+    drawConfe();
     drawGameUI();
 }
 
@@ -137,12 +137,12 @@ function drawObstacle(){
 }
 
 function drawConfe(){
-    fillRoundRect(confe.x,confe.y,confe.w,confe.h,20,'rgba(255, 153, 204,0.5)');
-    fillRoundRect(confe.x+10,confe.y+10,confe.w-20,confe.h-20,10,'rgba(255,204,255,0.9)');
+    fillRoundRect(confe.x,confe.y,confe.w,confe.h,20,'rgba(255, 255, 255,0.5)');
+    fillRoundRect(confe.x+10,confe.y+10,confe.w-20,confe.h-20,10,'rgba(255,255,51,0.9)');
     ctx.save()
     ctx.font = "30px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("妙仪~我是真心喜欢你！",confe.x+20,confe.y+50);
+    ctx.fillText("妙仪~我是真心喜欢你的！",confe.x+20,confe.y+50);
     ctx.fillText("希望有一天，我可以带你去看烟花！",confe.x+20,confe.y+100);
     ctx.fillText("--雨龙",confe.x+350,confe.y+150);
     ctx.restore();
@@ -159,8 +159,7 @@ function drawCharacter(){
 
 function drawDot(x,y,size,color){
     ctx.save();
-    ctx.fillStyle=color;
-    ctx.fillRect(x,y,size,size);
+    fillCircle(x,y,size,color);
     ctx.restore();
 }
 
@@ -253,10 +252,12 @@ function characterMoving(){
             var speed = getRandomInt(1,2);
             stars[n].x+=speed*Math.sin(stars[n].angle)*acc;
             stars[n].y+=speed*Math.cos(stars[n].angle)*acc;
+            stars[n].size+=0.4;
         } else {
             stars[n].x = mX;
             stars[n].y = mY;
             stars[n].angle = getRandomInt(0,360)*(Math.PI/180);
+            stars[n].size = 1;
         }
     }
     
@@ -378,21 +379,11 @@ function fillRect(x,y,width,height,lineWidth,color){
     ctx.restore();
 }
 
-function fillCircle(centerX,centerY,color){
-    var radius = 15;
+function fillCircle(centerX,centerY,radius,color){
     ctx.save();
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
     ctx.fillStyle = color;
-    ctx.closePath;
-    ctx.fill();
-    ctx.restore();
-    
-    radius = 10;
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-    ctx.fillStyle = 'black';
     ctx.closePath;
     ctx.fill();
     ctx.restore();
