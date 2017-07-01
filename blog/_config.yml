@@ -1,46 +1,21 @@
 # Hexo Configuration
-## Docs: http://hexo.io/docs/configuration.html
+## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
-# 建站年份
-since: 2014
-
-# Admin
-admin:
-  username: admin
-  password_hash: 2208db9a452f9f8591cae160025759c1
-  secret: secret123
-
-# Comments
-#duoshuo_shortname: jocstech
-disqus_shortname: jocstech
-
-# Creative Commons 4.0 International License.
-# http://creativecommons.org/
-# Available: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | zero
-creative_commons: by-nc-sa
-
 # Site
-title: "JocsTech · 雨龙"
-subtitle: "Joseph Fang"
-description: "一起探索计算机科学的世界！"
-author: Joseph Fang
-language: zh-Hans 
-timezone: UTC
-favicon: favicon.ico
+title: Hexo
+subtitle:
+description:
+author: John Doe
+language:
+timezone:
+
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://jocs.me/blog
-root: /blog/
+url: http://yoursite.com
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
-
-# Swiftype站内搜索:
-#swiftype_key: MpNUpgQ3R2-wswQUxXM5
-
-# Sitemap
-sitemap:
- path: sitemap.xml
 
 # Directory
 source_dir: source
@@ -52,27 +27,12 @@ code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
 
-
-# 社交链接，将在侧栏中显示
-social:
-  GitHub: https://github.com/jocstech
-  Twitter: https://twitter.com/jocstech
-  Weibo: http://weibo.com/ericyulong
-  Facebook: https://www.facebook.com/ericoso
-  知乎: http://www.zhihu.com/people/yulong-fang
-  豆瓣: http://www.douban.com/people/jocs/
-  Flickr: https://www.flickr.com/photos/wceo/
-  Instagram: https://instagram.com/lobufa/
-  # 等等
-
-
-
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
-filename_case: 1
+filename_case: 0
 render_drafts: false
 post_asset_folder: false
 relative_link: false
@@ -80,6 +40,7 @@ future: true
 highlight:
   enable: true
   line_number: true
+  auto_detect: false
   tab_replace:
 
 # Category & Tag
@@ -100,19 +61,11 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
-# next , landscape , simplest , biture , rebiture , tranquilpeak
-theme: tranquilpeak
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: landscape
 
 # Deployment
-## Docs: http://hexo.io/docs/deployment.html
+## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
-  repo: https://github.com/jocstech/blog.git
-  branch: gh-pages
-# Feed RSS
-feed:
-  type: atom
-  path: atom.xml
-  limit: 20
+  type:
